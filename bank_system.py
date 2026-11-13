@@ -20,10 +20,16 @@ import pickle
 import os
 import random
 import string
+import tempfile
 from datetime import datetime
 from functools import reduce
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+if os.environ.get("BANK_DATA_DIR"):
+    DATA_DIR = os.environ["BANK_DATA_DIR"]
+elif os.environ.get("VERCEL"):
+    DATA_DIR = os.path.join(tempfile.gettempdir(), "minibank-data")
+else:
+    DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 ACCOUNTS_FILE = os.path.join(DATA_DIR, "accounts.json")
 TXN_LOG_FILE = os.path.join(DATA_DIR, "transactions.csv")
 PICKLE_BACKUP = os.path.join(DATA_DIR, "accounts_backup.pkl")

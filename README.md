@@ -115,10 +115,14 @@ from the bottom of the customer login page).
 
 Vercel's Python functions are **serverless and stateless**: the
 filesystem is read-only except `/tmp`, and each cold start gets a fresh
-copy of the bundled code. That means `data/accounts.json` works great
-for local development and demos, but **new accounts/transactions won't
-reliably persist between requests once deployed on Vercel** — a write
-in one function invocation may not be visible to the next one.
+copy of the bundled code. On Vercel, the app stores its JSON, pickle, and
+CSV files under `/tmp/minibank-data` so the function can start and write
+data without modifying the deployed source. Those files are temporary:
+new accounts and transactions won't reliably persist between requests
+or cold starts.
+
+Set `BANK_DATA_DIR` to choose a different writable data directory. This
+is useful for local development or when configuring a persistent store.
 
 For a real deployment you'd swap the JSON file in `bank_system.py`'s
 `_load()`/`save()` methods for a hosted database (e.g. Vercel Postgres,
