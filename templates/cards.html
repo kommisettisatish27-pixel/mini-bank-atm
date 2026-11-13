@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Cards · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Cards</h1>
+<p class="page-sub">Your MiniBank debit card</p>
+
+{% set digits = acc.card_number[4:] %}
+<div class="bank-card">
+  <div class="card-top">
+    <span>MiniBank</span>
+    <span>{{ acc.account_type }}</span>
+  </div>
+  {% if reveal %}
+  <div class="card-number">CARD {{ digits[0:4] }} {{ digits[4:8] }} {{ digits[8:12] }}</div>
+  {% else %}
+  <div class="card-number">CARD &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; {{ digits[8:12] }}</div>
+  {% endif %}
+  <div class="card-bottom">
+    <span class="card-holder">{{ acc.name | upper }}</span>
+    <span>{{ acc.account_number }}</span>
+  </div>
+</div>
+
+{% if reveal %}
+<a href="{{ url_for('cards') }}" class="btn btn-outline" style="margin-top:16px;">Hide card number</a>
+{% else %}
+<a href="{{ url_for('cards', reveal=1) }}" class="btn btn-outline" style="margin-top:16px;">Reveal full card number</a>
+{% endif %}
+{% endblock %}

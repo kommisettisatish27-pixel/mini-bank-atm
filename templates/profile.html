@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Profile · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Profile details</h1>
+<p class="page-sub">Your personal information on file</p>
+
+<div class="panel" style="max-width:480px;">
+  <div class="profile-avatar" style="width:64px;height:64px;font-size:26px;margin-bottom:16px;">{{ acc.name[0] | upper }}</div>
+  <table class="ledger">
+    <tr><th>Name</th><td>{{ acc.name }}</td></tr>
+    <tr><th>Username</th><td>{{ acc.username }}</td></tr>
+    <tr><th>Account number</th><td>{{ acc.account_number }}</td></tr>
+    <tr><th>Account type</th><td>{{ acc.account_type }}</td></tr>
+    <tr><th>Customer since</th><td>{{ acc.created_at }}</td></tr>
+  </table>
+</div>
+{% endblock %}

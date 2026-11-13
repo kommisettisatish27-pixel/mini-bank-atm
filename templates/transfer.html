@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Transfer · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Transfer</h1>
+<p class="page-sub">Send money by username. No other customers are listed here — type the exact username you want to pay.</p>
+
+<div class="panel" style="max-width:420px;">
+  {% if recipient %}
+    <h2>Confirm recipient</h2>
+    <table class="ledger" style="margin-bottom:18px;">
+      <tr><th>Name</th><td>{{ recipient.name }}</td></tr>
+      <tr><th>Username</th><td>{{ recipient.username }}</td></tr>
+    </table>
+    <form method="post">
+      <input type="hidden" name="stage" value="send">
+      <input type="hidden" name="to_username" value="{{ recipient.username }}">
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount" type="number" step="0.01" min="0.01" required autofocus>
+      </div>
+      <button class="btn" type="submit">Send transfer</button>
+    </form>
+    <form method="get" style="margin-top:10px;">
+      <button class="btn btn-outline" type="submit" style="width:100%;">Search a different username</button>
+    </form>
+  {% else %}
+    <h2>Find recipient</h2>
+    <form method="post">
+      <input type="hidden" name="stage" value="find">
+      <div class="field">
+        <label for="to_username">Recipient's username</label>
+        <input id="to_username" name="to_username" type="text" placeholder="Enter the exact username" required autofocus>
+      </div>
+      <button class="btn" type="submit">Find account</button>
+    </form>
+  {% endif %}
+</div>
+
+<div class="panel" style="max-width:420px;">
+  <h2>Available balance</h2>
+  <div class="balance-figure" style="font-size:32px;">{{ acc.balance|inr }}</div>
+</div>
+{% endblock %}

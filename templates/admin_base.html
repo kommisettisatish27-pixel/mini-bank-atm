@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin · MiniBank{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="has-shell">
+<div class="shell">
+  <aside class="sidebar">
+    <div class="profile-summary" style="cursor:default;">
+      <span class="profile-avatar" style="background:var(--brass);">A</span>
+      <span class="profile-id">
+        <span class="profile-name">Administrator</span>
+        <span class="profile-acct">Admin console</span>
+      </span>
+    </div>
+
+    <details class="nav-menu">
+      <summary class="nav-menu-toggle">
+        <span class="menu-icon" aria-hidden="true">&#9776;</span>
+        Menu
+      </summary>
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' }}">All accounts</a>
+        <a href="{{ url_for('admin_logout') }}">Log out</a>
+      </nav>
+    </details>
+
+    <div class="sidebar-foot">MiniBank &middot; admin</div>
+  </aside>
+
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="toast-stack">
+          {% for category, m in messages %}
+          <div class="toast toast-{{ 'error' if category == 'error' else 'success' }}">{{ m }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

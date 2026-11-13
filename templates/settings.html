@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Settings · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Settings</h1>
+<p class="page-sub">Manage your login credentials</p>
+
+<div class="panel" style="max-width:380px;">
+  <h2>Change password</h2>
+  <form method="post">
+    <div class="field">
+      <label for="new_password">New password</label>
+      <input id="new_password" name="new_password" type="password" required>
+    </div>
+    <button class="btn" type="submit">Update password</button>
+  </form>
+</div>
+{% endblock %}

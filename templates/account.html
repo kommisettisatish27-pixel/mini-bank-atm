@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Account · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Account</h1>
+<p class="page-sub">Everything about how your account is set up</p>
+
+<div class="panel">
+  <h2>Details</h2>
+  <table class="ledger">
+    <tr><th>Account holder</th><td>{{ acc.name }}</td></tr>
+    <tr><th>Username</th><td>{{ acc.username }}</td></tr>
+    <tr><th>Account number</th><td>{{ acc.account_number }}</td></tr>
+    <tr><th>Account type</th><td>{{ acc.account_type }}</td></tr>
+    <tr><th>Interest rate</th><td>{{ acc.interest_rate() }}% per year</td></tr>
+    <tr><th>Opened on</th><td>{{ acc.created_at }}</td></tr>
+  </table>
+</div>
+
+<div class="panel">
+  <h2>Balance</h2>
+  <div class="balance-figure" style="font-size:40px;">{{ acc.balance|inr }}</div>
+</div>
+{% endblock %}

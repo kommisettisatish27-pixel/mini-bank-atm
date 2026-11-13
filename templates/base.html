@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MiniBank{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{{ 'has-shell' if acc else 'auth-body' }}">
+
+  {% if acc %}
+  <div class="shell">
+    <aside class="sidebar">
+      <details class="profile-menu">
+        <summary class="profile-summary">
+          <span class="profile-avatar">{{ acc.name[0] | upper }}</span>
+          <span class="profile-id">
+            <span class="profile-name">{{ acc.name }}</span>
+            <span class="profile-acct">{{ acc.account_number }}</span>
+          </span>
+        </summary>
+        <div class="profile-dropdown">
+          <a href="{{ url_for('profile') }}">Profile details</a>
+          <a href="{{ url_for('settings') }}">Settings</a>
+          <a href="{{ url_for('cards') }}">Cards</a>
+          <a href="{{ url_for('logout') }}" class="danger">Log out</a>
+        </div>
+      </details>
+
+      <details class="nav-menu">
+        <summary class="nav-menu-toggle">
+          <span class="menu-icon" aria-hidden="true">&#9776;</span>
+          Menu
+        </summary>
+        <nav class="sidebar-nav">
+          <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">Overview</a>
+          <a href="{{ url_for('account') }}" class="{{ 'active' if request.endpoint == 'account' }}">Account</a>
+          <a href="{{ url_for('transfer') }}" class="{{ 'active' if request.endpoint == 'transfer' }}">Transfer</a>
+          <a href="{{ url_for('deposit') }}" class="{{ 'active' if request.endpoint == 'deposit' }}">Deposit</a>
+          <a href="{{ url_for('withdraw') }}" class="{{ 'active' if request.endpoint == 'withdraw' }}">Withdraw</a>
+          <a href="{{ url_for('bills') }}" class="{{ 'active' if request.endpoint == 'bills' }}">Bill payment</a>
+          <a href="{{ url_for('calculator') }}" class="{{ 'active' if request.endpoint == 'calculator' }}">Percentage calculator</a>
+        </nav>
+      </details>
+
+      <div class="sidebar-foot">MiniBank</div>
+    </aside>
+
+    <main class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="toast-stack">
+            {% for category, m in messages %}
+            <div class="toast toast-{{ 'error' if category == 'error' else 'success' }}">{{ m }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  {% else %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash flash-auth">
+          {% for category, m in messages %}<p class="{{ 'error-text' if category == 'error' else '' }}">{{ m }}</p>{% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block auth_content %}{% endblock %}
+  {% endif %}
+
+</body>
+</html>

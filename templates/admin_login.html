@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin login · MiniBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash flash-auth">{% for category, m in messages %}<p class="{{ 'error-text' if category == 'error' else '' }}">{{ m }}</p>{% endfor %}</div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="auth-card">
+    <p class="auth-brand">Admin console</p>
+    <p class="auth-sub">Site administration &mdash; MiniBank</p>
+
+    <form method="post">
+      <div class="field">
+        <label for="username">Admin username</label>
+        <input id="username" name="username" type="text" required autofocus>
+      </div>
+      <div class="field">
+        <label for="password">Admin password</label>
+        <input id="password" name="password" type="password" required>
+      </div>
+      <button class="btn" type="submit" style="width:100%">Log in</button>
+    </form>
+
+    <p class="auth-switch"><a href="{{ url_for('login') }}">Back to customer login</a></p>
+  </div>
+</body>
+</html>

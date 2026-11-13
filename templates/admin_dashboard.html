@@ -1,0 +1,46 @@
+{% extends "admin_base.html" %}
+{% block title %}All accounts · Admin{% endblock %}
+{% block content %}
+<h1 class="page-title">All accounts</h1>
+<p class="page-sub">Everyone who has registered on the site</p>
+
+<div class="stat-row">
+  <div class="stat"><div class="label">Accounts</div><div class="value">{{ totals.accounts }}</div></div>
+  <div class="stat"><div class="label">Total balance on file</div><div class="value">{{ totals.balance|inr }}</div></div>
+</div>
+
+<form method="get" class="search-bar">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search by name, username or account number">
+  <button class="btn btn-outline" type="submit">Search</button>
+  {% if q %}<a href="{{ url_for('admin_dashboard') }}" class="clear-link">Clear</a>{% endif %}
+</form>
+
+<div class="panel">
+  {% if accounts %}
+  <table class="ledger">
+    <tr><th>Username</th><th>Name</th><th>Type</th><th>Account number</th><th>Balance</th><th></th></tr>
+    {% for a in accounts %}
+    <tr>
+      <td>{{ a.username }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.account_type }}</td>
+      <td>{{ a.account_number }}</td>
+      <td>{{ a.balance|inr }}</td>
+      <td><a href="{{ url_for('admin_account', username=a.username) }}" class="btn btn-outline" style="padding:6px 12px;">Manage</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% if total_pages > 1 %}
+  <div class="pagination">
+    {% for p in range(1, total_pages + 1) %}
+    <a href="{{ url_for('admin_dashboard', page=p, q=q) }}" class="{{ 'active' if p == page }}">{{ p }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% else %}
+  <p class="page-sub">{{ 'No accounts match that search.' if q else 'No accounts have been created yet.' }}</p>
+  {% endif %}
+</div>
+{% endblock %}

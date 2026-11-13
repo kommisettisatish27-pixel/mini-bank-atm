@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Bill payment · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Bill payment</h1>
+<p class="page-sub">Choose the exact office you're paying, and add your consumer number so it's clear which account gets the payment.</p>
+
+<div class="panel" style="max-width:440px;">
+  {% if pending %}
+    <h2>Confirm payment</h2>
+    <table class="ledger" style="margin-bottom:18px;">
+      <tr><th>Biller</th><td>{{ pending.biller }}</td></tr>
+      <tr><th>Reference</th><td>{{ pending.reference }}</td></tr>
+      <tr><th>Amount</th><td>{{ pending.amount|inr }}</td></tr>
+    </table>
+    <form method="post">
+      <input type="hidden" name="stage" value="execute">
+      <input type="hidden" name="biller" value="{{ pending.biller }}">
+      <input type="hidden" name="reference" value="{{ pending.reference }}">
+      <input type="hidden" name="amount" value="{{ pending.amount }}">
+      <button class="btn" type="submit">Confirm payment</button>
+    </form>
+    <form method="get" style="margin-top:10px;">
+      <button class="btn btn-outline" type="submit" style="width:100%;">Cancel</button>
+    </form>
+  {% else %}
+    <form method="post">
+      <input type="hidden" name="stage" value="confirm">
+      <div class="field">
+        <label for="biller">Biller</label>
+        <select id="biller" name="biller" required>
+          {% for category, branches in biller_groups.items() %}
+          <optgroup label="{{ category }}">
+            {% for branch in branches %}
+            <option value="{{ branch }} ({{ category }})">{{ branch }}</option>
+            {% endfor %}
+          </optgroup>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="reference">Consumer / reference number</label>
+        <input id="reference" name="reference" type="text" placeholder="The account or meter number this bill belongs to" required>
+      </div>
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount" type="number" step="0.01" min="0.01" required>
+      </div>
+      <button class="btn" type="submit">Review payment</button>
+    </form>
+  {% endif %}
+</div>
+
+<div class="panel" style="max-width:440px;">
+  <h2>Recent bill payments</h2>
+  {% if recent_bills %}
+  <table class="ledger">
+    <tr><th>Date</th><th>Amount</th><th>Details</th></tr>
+    {% for t in recent_bills %}
+    <tr>
+      <td>{{ t[0] }}</td>
+      <td class="amt-out">{{ t[2]|inr }}</td>
+      <td>{{ t[4] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="page-sub">No bill payments yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

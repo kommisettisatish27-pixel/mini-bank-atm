@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Calculator · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Percentage calculator</h1>
+<p class="page-sub">Work out a percentage, or estimate simple interest on a deposit</p>
+
+<div class="grid-2">
+  <div class="panel">
+    <h2>Percentage of a value</h2>
+    <form method="post">
+      <input type="hidden" name="calc_type" value="percentage">
+      <div class="field">
+        <label for="part">Part</label>
+        <input id="part" name="part" type="number" step="0.01" required>
+      </div>
+      <div class="field">
+        <label for="whole">Whole</label>
+        <input id="whole" name="whole" type="number" step="0.01" required>
+      </div>
+      <button class="btn" type="submit">Calculate</button>
+    </form>
+    {% if percentage_result is not none %}
+    <div class="result-callout">{{ percentage_result }}%</div>
+    {% endif %}
+  </div>
+
+  <div class="panel">
+    <h2>Simple interest estimate</h2>
+    <form method="post">
+      <input type="hidden" name="calc_type" value="interest">
+      <div class="field">
+        <label for="principal">Principal</label>
+        <input id="principal" name="principal" type="number" step="0.01" required>
+      </div>
+      <div class="field">
+        <label for="rate">Rate (% per year)</label>
+        <input id="rate" name="rate" type="number" step="0.01" value="{{ acc.interest_rate() }}" required>
+      </div>
+      <div class="field">
+        <label for="years">Years</label>
+        <input id="years" name="years" type="number" step="0.5" required>
+      </div>
+      <button class="btn" type="submit">Calculate</button>
+    </form>
+    {% if interest_result is not none %}
+    <div class="result-callout">{{ interest_result|inr }}</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

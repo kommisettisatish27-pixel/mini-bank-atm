@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Create account · MiniBank{% endblock %}
+{% block auth_content %}
+<div class="auth-card">
+  <p class="auth-brand">Open an account</p>
+  <p class="auth-sub">Takes less than a minute</p>
+
+  <form method="post">
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" required autofocus>
+    </div>
+    <div class="field">
+      <label for="username">Choose a username</label>
+      <input id="username" name="username" type="text" required>
+    </div>
+    <div class="field">
+      <label for="password">Choose a password</label>
+      <input id="password" name="password" type="password" required>
+    </div>
+    <div class="field">
+      <label for="account_type">Account type</label>
+      <select id="account_type" name="account_type">
+        <option value="Savings">Savings</option>
+        <option value="Current">Current</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="opening_balance">Opening deposit</label>
+      <input id="opening_balance" name="opening_balance" type="number" step="0.01" min="0" value="0">
+    </div>
+    <button class="btn" type="submit" style="width:100%">Create account</button>
+  </form>
+
+  <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+</div>
+{% endblock %}

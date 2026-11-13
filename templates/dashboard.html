@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Overview · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Good to see you, {{ acc.name.split(" ")[0] }}</h1>
+<p class="page-sub">{{ acc.account_type }} account &middot; {{ acc.account_number }}</p>
+
+<div class="panel">
+  <div class="balance-hero">
+    <div>
+      <span class="balance-tag">Available balance</span>
+      <div class="balance-figure">{{ acc.balance|inr }}</div>
+    </div>
+    <a href="#ledger" class="btn-outline btn" style="align-self:flex-end;">Jump to activity</a>
+  </div>
+
+  <div class="quick-actions">
+    <a href="{{ url_for('deposit') }}">Deposit</a>
+    <a href="{{ url_for('withdraw') }}">Withdraw</a>
+    <a href="{{ url_for('transfer') }}">Transfer</a>
+    <a href="{{ url_for('bills') }}">Pay a bill</a>
+    <a href="{{ url_for('calculator') }}">Percentage calculator</a>
+  </div>
+</div>
+
+<div class="stat-row">
+  <div class="stat"><div class="label">Total deposits</div><div class="value">{{ summary.total_deposits|inr }}</div></div>
+  <div class="stat"><div class="label">Total withdrawals</div><div class="value">{{ summary.total_withdrawals|inr }}</div></div>
+  <div class="stat"><div class="label">Transactions</div><div class="value">{{ summary.count }}</div></div>
+  {% if stats %}
+  <div class="stat"><div class="label">Average transaction</div><div class="value">{{ stats.average_transaction|inr }}</div></div>
+  {% endif %}
+</div>
+
+<div class="panel" id="ledger">
+  <h2>Activity</h2>
+
+  <form method="get" class="search-bar" action="{{ url_for('dashboard') }}#ledger">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search by type or note">
+    <select name="type">
+      <option value="" {{ 'selected' if not type_filter }}>All types</option>
+      <option value="Deposit" {{ 'selected' if type_filter == 'Deposit' }}>Deposit</option>
+      <option value="Withdraw" {{ 'selected' if type_filter == 'Withdraw' }}>Withdraw</option>
+    </select>
+    <button class="btn btn-outline" type="submit">Search</button>
+    {% if q or type_filter %}<a href="{{ url_for('dashboard') }}#ledger" class="clear-link">Clear</a>{% endif %}
+  </form>
+
+  {% if ordered %}
+  <table class="ledger">
+    <tr><th>Date</th><th>Type</th><th>Amount</th><th>Balance after</th><th>Note</th></tr>
+    {% for t in ordered %}
+    <tr>
+      <td>{{ t[0] }}</td>
+      <td>{{ t[1] }}</td>
+      <td class="{{ 'amt-in' if t[1] == 'Deposit' else 'amt-out' }}">{{ t[2]|inr }}</td>
+      <td>{{ t[3]|inr }}</td>
+      <td>{{ t[4] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="page-sub">{{ 'No transactions match your search.' if (q or type_filter) else 'No transactions yet — make a deposit to get started.' }}</p>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <h2>Account at a glance</h2>
+  <table class="ledger">
+    <tr><th>Card number</th><td>{{ acc.card_number }}</td></tr>
+    <tr><th>Interest rate</th><td>{{ acc.interest_rate() }}% p.a.</td></tr>
+    <tr><th>Member since</th><td>{{ acc.created_at.split(" ")[0] }}</td></tr>
+  </table>
+</div>
+{% endblock %}

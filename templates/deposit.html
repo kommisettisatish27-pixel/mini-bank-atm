@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Deposit · MiniBank{% endblock %}
+{% block content %}
+<h1 class="page-title">Deposit</h1>
+<p class="page-sub">Add money to your account</p>
+
+<div class="panel" style="max-width:380px;">
+  <form method="post">
+    <div class="field">
+      <label for="amount">Amount</label>
+      <input id="amount" name="amount" type="number" step="0.01" min="0.01" required autofocus>
+    </div>
+    <button class="btn" type="submit">Deposit</button>
+  </form>
+</div>
+
+<div class="panel" style="max-width:380px;">
+  <h2>Current balance</h2>
+  <div class="balance-figure" style="font-size:32px;">{{ acc.balance|inr }}</div>
+</div>
+{% endblock %}
