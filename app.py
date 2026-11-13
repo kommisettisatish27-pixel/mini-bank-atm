@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(
     __name__,
     template_folder=os.path.join(BASE_DIR, "templates"),
-    static_folder=os.path.join(BASE_DIR, "static"),
+    static_folder=os.path.join(BASE_DIR, "public", "static"),
 )
 app.secret_key = os.environ.get("SECRET_KEY", "minibank-dev-secret")
 app.permanent_session_lifetime = timedelta(days=30)  # used by "Remember me"

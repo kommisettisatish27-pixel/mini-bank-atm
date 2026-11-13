@@ -11,13 +11,10 @@ in Python. HTML/CSS are used only as the display layer Flask renders
 minibank/
 ├── app.py                 # Flask routes (the website's pages)
 ├── bank_system.py         # All banking logic (OOP, files, functional programming)
-├── api/index.py           # Entry point Vercel's Python runtime loads
-├── vercel.json            # Vercel build/routing config
+├── vercel.json            # Vercel project configuration
 ├── requirements.txt
-├── data/
-│   └── accounts.json      # Where accounts + transactions are stored
 ├── templates/              # Jinja2 HTML templates (structure only)
-└── static/style.css        # All styling
+└── public/static/style.css # Styling served by Vercel's CDN
 ```
 
 ## How each syllabus unit shows up in the code
@@ -107,8 +104,8 @@ from the bottom of the customer login page).
 ## Deploy to Vercel
 
 1. Push this folder to a GitHub repo.
-2. In Vercel, "Add New Project" → import the repo. Vercel will detect
-   `vercel.json` and use the `@vercel/python` builder automatically.
+2. In Vercel, "Add New Project" → import the repo. Vercel detects the
+   Flask app in `app.py` and serves assets in `public/` from its CDN.
 3. Deploy. No extra configuration is required for a first deploy.
 
 ### Important limitation to know about
